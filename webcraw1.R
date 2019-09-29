@@ -56,5 +56,33 @@ htmlToText <- function(input, ...) {
   text.vector <- sapply(text.list, collapse_text)
   return(text.vector)
 }
+###Run the function code for htmlToText()(Be sure this function is listed in your Environment)
 
+###Load the first element in the frontier to an "exploredlink" variable
+
+
+frontier <- c("https://www.cnn.com","https://www.kdnuggets.com","https://news.google.com")
+
+topicwords<-c("technology","school","web","mining","news")
+
+num <- 50 #total number of items to crawl
+resultTitles <- c()
+resultUrls <- c()
+j <- 0  #number of items in the repository
+
+
+while (j < num){
+  
+  if(length(frontier)<1){
+    break
+  }
+  
+  #grab the first item in the frontier and place in the "exploredlink" variable
+  exploredlink<-frontier[1]
+  frontier<-frontier[-1]
+  
+  if(str_detect(exploredlink,"\\.jpg$"))
+  {
+    next
+  }
   
