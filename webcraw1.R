@@ -22,3 +22,14 @@ htmlToText <- function(input, ...) {
     
     # if input is html text
     if(grepl("</html>", input, fixed = TRUE)) return(input)
+    
+    # if input is a URL, probably should use a regex here instead?
+    if(!grepl(" ", input)) {
+      # downolad SSL certificate in case of https problem
+      if(!file.exists("cacert.perm")) download.file(url="http://curl.haxx.se/ca/cacert.pem", destfile="cacert.perm")
+      return(getURL(input, followlocation = TRUE, cainfo = "cacert.perm"))
+    }
+    
+    # return NULL if none of the conditions above apply
+    return(NULL)
+  }
