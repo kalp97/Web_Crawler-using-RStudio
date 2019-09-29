@@ -40,3 +40,8 @@ htmlToText <- function(input, ...) {
     text <- xpathSApply(doc, "//text()[not(ancestor::script)][not(ancestor::style)][not(ancestor::noscript)][not(ancestor::form)]", xmlValue)
     return(text)
   }
+  
+  # format text vector into one character string
+  collapse_text <- function(txt) {
+    return(paste(txt, collapse = " "))
+  }
