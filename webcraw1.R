@@ -45,3 +45,16 @@ htmlToText <- function(input, ...) {
   collapse_text <- function(txt) {
     return(paste(txt, collapse = " "))
   }
+  ###--- MAIN ---###
+  # STEP 1: Evaluate input
+  html.list <- lapply(input, evaluate_input)
+  
+  # STEP 2: Extract text from HTML
+  text.list <- lapply(html.list, convert_html_to_text)
+  
+  # STEP 3: Return text
+  text.vector <- sapply(text.list, collapse_text)
+  return(text.vector)
+}
+
+  
