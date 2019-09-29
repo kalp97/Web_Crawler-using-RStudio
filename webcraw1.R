@@ -86,3 +86,65 @@ while (j < num){
     next
   }
   
+  #fill in your code here
+  doc <- tryCatch(getURL(exploredlink),error=function(cond){return("")})
+  if(str_length(doc)<10){
+    next
+  }
+  
+  doc <- htmlParse(doc)
+  #print(doc)
+  domain<-str_extract(exploredlink,pattern = ".*\\.com")
+  
+  if(is.na(domain)){
+    next
+  }
+  
+  titleText <- tryCatch(xmlToDataFrame(nodes = getNodeSet(doc, "//title")),error=function(cond){return("")})
+  if(titleText=="" && titleText[1]!="Object moved"){
+    next
+  }
+  titleText <- as.vector(titleText$text)
+  titleText <- unique(titleText)
+  print(titleText[1])
+  bodyText<- tryCatch(htmlToText(content(GET(exploredlink),type="text/html",as="text")),error=function(cond){return("")})
+  
+  bodyText<-str_split(tolower(str_replace_all((str_replace_all(bodyText,"(\\t|\\n|\\r)"," ")),"\\s{2,}"," "))," ")[[1]]
+  #print(bodyText)
+  if(any(topicwords %in% bodyText) && titleText[1]!="Object moved"){
+    resultTitles <- append(resultTitles, titleText[1]) 
+    resultUrls <- append(resultUrls, exploredlink)
+    anchor <- getNodeSet(doc, "//a")
+    #print(anchor)
+    anchor <- sapply(anchor, function(x) xmlGetAttr(x, "href"))
+    
+    if(length(anchor)>0){
+      temp <- c()
+      for(i in 1:length(anchor)){
+        if(is.null(anchor[[i]])){
+          next
+        }
+        if(!str_detect(anchor[[i]][1],"^https")){
+          next
+        }
+        if(str_detect(anchor[[i]][1],domain)){
+          next
+        }
+        temp <- append(temp,str_trim(anchor[[i]][1]))
+      }
+      anchor <- temp
+      rm(temp)
+      
+      frontier<-append(frontier,anchor)
+      frontier <- unique(frontier)
+    }
+    j = j+1 
+    print(j)  
+  }
+  
+}
+result.data <- data.frame(resultTitles, resultUrls)
+#print(frontier)
+str(result.data)
+
+  
