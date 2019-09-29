@@ -5,3 +5,8 @@ library(RCurl)
 library(XML)
 library(stringr)
 library(httr)
+
+htmlToText <- function(input, ...) {
+  ###---PACKAGES ---###
+  require(RCurl)
+  require(XML)
