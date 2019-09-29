@@ -10,3 +10,12 @@ htmlToText <- function(input, ...) {
   ###---PACKAGES ---###
   require(RCurl)
   require(XML)
+  
+  ###--- LOCAL FUNCTIONS ---###
+  # Determine how to grab html for a single input element
+  evaluate_input <- function(input) {    
+    # if input is a .html file
+    if(file.exists(input)) {
+      char.vec <- readLines(input, warn = FALSE)
+      return(paste(char.vec, collapse = ""))
+    }
