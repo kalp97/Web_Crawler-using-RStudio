@@ -33,3 +33,10 @@ htmlToText <- function(input, ...) {
     # return NULL if none of the conditions above apply
     return(NULL)
   }
+  
+  # convert HTML to plain text
+  convert_html_to_text <- function(html) {
+    doc <- htmlParse(html, asText = TRUE)
+    text <- xpathSApply(doc, "//text()[not(ancestor::script)][not(ancestor::style)][not(ancestor::noscript)][not(ancestor::form)]", xmlValue)
+    return(text)
+  }
