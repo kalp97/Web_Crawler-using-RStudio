@@ -19,3 +19,6 @@ htmlToText <- function(input, ...) {
       char.vec <- readLines(input, warn = FALSE)
       return(paste(char.vec, collapse = ""))
     }
+    
+    # if input is html text
+    if(grepl("</html>", input, fixed = TRUE)) return(input)
